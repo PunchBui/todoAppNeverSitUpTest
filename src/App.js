@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, Fragment } from "react";
+import Input from "./Components/Input";
+import List from "./Components/List";
+import Main from "./Components/Main";
+import Login from "./Components/Login";
+import ModalCreateTodo from "./Components/ModalCreateTodo";
+import styled from "styled-components";
+import { Switch, Route, Redirect } from 'react-router-dom'
 
-function App() {
+const App = () => {
+  const [token, setToken] = useState("")
+  const [authorized, setAuthorized] = useState(false)
+  // console.log(token)
+  // console.log(authorized)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <ModalCreateTodo/>
+      <Wrapper>
+        <Switch>
+          <Route path="/" render={(props) => authorized ? 
+            <Main {...props} token={token}/> : 
+            <Login {...props} setToken={setToken} setAuthorized={setAuthorized} />} 
+          />
+          {/* <Route path="/about" component={About} />
+          <Route path="/posts" component={Post} />
+          <Route path="/projects" component={Project} /> */}
+        </Switch>
+      </Wrapper>
+    </Fragment>
   );
 }
 
-export default App;
+export default App
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  justify-content:center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+`;
