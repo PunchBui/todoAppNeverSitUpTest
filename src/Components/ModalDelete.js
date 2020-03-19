@@ -2,20 +2,17 @@ import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import axios from 'axios'
 
-const ModalCreateTodo = props => {
+const ModalDelete = props => {
     // console.log(props)
-    const [title, setTitle] = useState("")
-    const [des, setDes] = useState("")
-    const url = "https://candidate.neversitup.com/todo/todos"
+    const url = "https://candidate.neversitup.com/todo/todos/" + props.idtoDelete
     const Token = "Bearer " + props.token
-    const createTodo = () => {
+    const deleteTodo = () => {
         axios({
             "url": url,
-            "method": "POST",
+            "method": "DELETE",
             "headers": {
                 "Authorization": Token
             },
-            "data": { "title": title, "description": des }
         })
             .then(function (response) {
                 // console.log(response)
@@ -25,41 +22,29 @@ const ModalCreateTodo = props => {
                 // console.log(error)
             });
     }
-    const submitHandler = (e) => {
+    const deleteHandler = (e) => {
         e.preventDefault()
-        createTodo()
+        console.log("deleting")
+        deleteTodo()
     }
     const cancelHandler = (e) => {
         e.preventDefault()
         props.callbackIsModalOpen(false)
     }
     return (
-        <CreateContainner onSubmit={e => submitHandler(e)}>
-            <span>Title</span>
-            <input
-                value={title}
-                type="text"
-                placeholder="Title"
-                onChange={e => setTitle(e.target.value)}
-            />
-            <span>Description</span>
-            <input
-                value={des}
-                type="text"
-                placeholder="Description"
-                onChange={e => setDes(e.target.value)}
-            />
+        <DeleteContainer>
+            <DeleteTitle>Do you really want to delete {props.titletoDelete} ?</DeleteTitle>
             <ButtonContainner>
                 <button onClick={e => cancelHandler(e)}>Cancel</button>
-                <input type="submit" value="Create" />
+                <button onClick={e => deleteHandler(e)}>Delete</button>
             </ButtonContainner>
-        </CreateContainner>
+        </DeleteContainer>
     );
 };
 
-export default ModalCreateTodo;
+export default ModalDelete;
 
-const CreateContainner = styled.form`
+const DeleteContainer = styled.div`
 display: flex;
 flex-direction: column;
 justify-content:center;
@@ -70,4 +55,8 @@ background-color: #FFFFFF;
 const ButtonContainner = styled.div`
 display: flex;
 justify-content:center;
+`;
+
+const DeleteTitle = styled.span`
+
 `;

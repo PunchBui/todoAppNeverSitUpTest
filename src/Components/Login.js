@@ -19,30 +19,21 @@ const Login = props => {
     const url = "https://candidate.neversitup.com/todo/users/auth"
     const checkUser = () => {
         axios({
-            "async": true,
-            "crossDomain": true,
             "url": url,
             "method": "POST",
-            "headers": {
-                "Content-Type": "application/json",
-                "Cache-Control": "no-cache",
-                "Postman-Token": "336858e9-d30f-4846-856a-915052bfbf0a,9de990ee-b41d-4af6-94f9-e8cb716ce130",
-                "cache-control": "no-cache"
-            },
-            "processData": false,
             "data": {
                 "username" : user,
                 "password" : pass
             }
         })
         .then(function (response) {
-            console.log(response)
-            props.setToken(response.data.token)
+            // console.log(response)
+            props.callbackToken(response.data.token)
             // console.log(token);
-            props.setAuthorized(true)
+            props.callbackAuthorized(true)
         })
         .catch(function (error) {
-            console.log(error)
+            // console.log(error)
         });
     }
     return (

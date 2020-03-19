@@ -4,11 +4,12 @@ import List from "./List";
 import axios from 'axios'
 
 const Main = props => {
-    const [todoList,setTodoList] = useState({})
-    // console.log(props);
+    // console.log(props)
+    const [todoList,setTodoList] = useState([])
     useEffect(() => {
         getAllTodo()
-    }, []);
+    }, [todoList]);
+
     const url = "https://candidate.neversitup.com/todo/todos"
     const Token = "Bearer " + props.token
     const getAllTodo = () => {
@@ -19,20 +20,27 @@ const Main = props => {
                 "Authorization": Token,
             }})
             .then(function (response) {
-                console.log(response)
+                // console.log(response)
                 setTodoList(response.data)
             })
             .catch(function (error) {
-                console.log(error)
+                // console.log(error)
             });
     }
-    const createHandler = () => {
+    const createHandler = (e) => {
+        e.preventDefault()
+        props.callbackIsModalOpen(true)
+        props.callbackModalType("create")
     }
     return (
         <Fragment>
             <Wrapper>
-                <List />
-                <CreateBtn onClick={createHandler}>Create</CreateBtn>
+                <List 
+                    todoList={todoList}
+                    callbackIsModalOpen = {props.callbackIsModalOpen}
+                    callbackModalType = {props.callbackModalType}
+                />
+                <CreateBtn onClick={(e) => createHandler(e)}>Create</CreateBtn>
             </Wrapper>
         </Fragment>
     );
