@@ -1,32 +1,30 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import axios from 'axios';
-import ModalCreateTodo from "./ModalCreateTodo"
+import ModalInteractTodo from "./ModalInteractTodo"
 import ModalDelete from "./ModalDelete"
 
 const Modal = props => {
     // onClick={() => props.callbackIsModalOpen(false)}
+    // console.log(props.todoToInteract)
     return (
         <Fragment>
             <Wrapper isOpen={props.isOpen}>
-                {props.modalType == "delete" ? (
-                    <ModalDelete
-                    token={props.token}
-                    callbackIsModalOpen={props.callbackIsModalOpen}
-                    idtoDelete={props.idtoDelete}
-                    titletoDelete={props.titletoDelete}
-                />
-                ) : props.modalType == "create" ? (
-                    <ModalCreateTodo
+                {props.modalType == "delete" 
+                ? <ModalDelete
                         token={props.token}
                         callbackIsModalOpen={props.callbackIsModalOpen}
-                    />
-                ) : (
-                    <ModalCreateTodo
+                        todoToInteract={props.todoToInteract}
+                        getAllTodo={props.getAllTodo}
+                  />
+                : <ModalInteractTodo
                         token={props.token}
                         callbackIsModalOpen={props.callbackIsModalOpen}
-                    />
-                )}
+                        modalType={props.modalType}
+                        todoToInteract={props.todoToInteract}
+                        getAllTodo={props.getAllTodo}
+                  />
+                }
             </Wrapper>
         </Fragment>
     );
@@ -35,14 +33,12 @@ const Modal = props => {
 export default Modal;
 
 const Wrapper = styled.div`
-display: ${({isOpen}) => isOpen ? "flex" : "none" };
+display: ${({ isOpen }) => isOpen ? "flex" : "none"};
 justify-content:center;
 align-items: center;
-position:absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
+position: fixed;
 width:100%;
 height:100vh;
 background-color: rgba(0,0,0,0.5);
+z-index: 2;
 `;
