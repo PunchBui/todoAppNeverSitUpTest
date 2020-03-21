@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from 'axios';
 import ModalInteractTodo from "./ModalInteractTodo"
 import ModalDelete from "./ModalDelete"
+import ModalBonus from "./ModalBonus"
 
 const Modal = props => {
     // onClick={() => props.callbackIsModalOpen(false)}
@@ -16,6 +17,10 @@ const Modal = props => {
                         callbackIsModalOpen={props.callbackIsModalOpen}
                         todoToInteract={props.todoToInteract}
                         getAllTodo={props.getAllTodo}
+                  />
+                : props.modalType === "bonus" 
+                ? <ModalBonus
+                        callbackIsModalOpen={props.callbackIsModalOpen}
                   />
                 : <ModalInteractTodo
                         token={props.token}

@@ -4,7 +4,7 @@ import styled from "styled-components";
 const List = props => {
     // console.log("List props", props);
     // useEffect(() => {
-
+    console.log(props.todoList)
     // }, [props.todoList])
 
     const actionHandler = (type,payload) => {
@@ -29,14 +29,16 @@ const List = props => {
         if (month < 10) {
             month = '0' + month;
         }
-        console.log(year+'-' + month + '-'+dt);
+        // console.log(year+'-' + month + '-'+dt);
         const formatted = dt+' ' + month + ' '+year
         return(formatted)
     }
     return (
         <Fragment>
             <ListContainner>
-                {props.todoList.map((item,i) => {
+                {props.todoList.length<=0
+                ? <ListBox><Title>Create some todos.</Title></ListBox> 
+                : props.todoList.map((item,i) => {
                     return (
                         <ListBox key={i}>
                             <TodoBox onClick={() => actionHandler("update",item)}>

@@ -1,65 +1,94 @@
 import React, { Fragment, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import axios from 'axios'
+import {checkUser as apiCheckUser} from '../Api'
 
 const Login = props => {
-    const [user, setUser] = useState("punch")
-    const [pass, setPass] = useState("1563542879")
+    const [user, setUser] = useState("")
+    const [pass, setPass] = useState("")
+    const [blankUser, setBlankUser] = useState(false)
+    const [blankPass, setBlankPass] = useState(false)
+    const [invalid, setInvalid] = useState(false)
     let history = useHistory();
     const keyDownHandler = e => {
         if (e.key === "Enter") {
-            submitHandler();
+            submitHandler(e);
         }
     };
     const submitHandler = (e) => {
         e.preventDefault()
-        //   console.log(user,pass)
-        checkUser();
+        setBlankUser(user === "" ? true : false)
+        setBlankPass(pass === "" ? true : false)
+        if(user!=="" && pass!==""){
+            // setInvalid(false)
+            checkUser();
+        }
+    }
+    const closeInvalid = () => {
+        if(invalid){setInvalid(false)}
     }
     //api
-    const url = "https://candidate.neversitup.com/todo/users/auth"
+    let errerMessage = "Invalid username or password."
     const checkUser = () => {
-        axios({
-            "url": url,
-            "method": "POST",
-            "data": {
-                "username" : user,
-                "password" : pass
-            }
-        })
-        .then(function (response) {
+        apiCheckUser(user,pass)
+        .then((response) => {
             // console.log(response)
             props.callbackToken(response.data.token)
             // console.log(token);
             props.callbackAuthorized(true)
             history.push("/dashboard");
         })
-        .catch(function (error) {
-            // console.log(error)
+        .catch( (error) => {
+            setInvalid(true)
+            console.log(error)
         });
     }
+    // const url = "https://candidate.neversitup.com/todo/users/auth"
+    // const checkUser = () => {
+    //     axios({
+    //         "url": url,
+    //         "method": "POST",
+    //         "data": {
+    //             "username" : user,
+    //             "password" : pass
+    //         }
+    //     })
+    //     .then((response) => {
+    //         // console.log(response)
+    //         props.callbackToken(response.data.token)
+    //         // console.log(token);
+    //         props.callbackAuthorized(true)
+    //         history.push("/dashboard");
+    //     })
+    //     .catch( (error) => {
+    //         setInvalid(true)
+    //         console.log(invalid)
+    //     });
+    // }
     return (
         <Fragment>
             <LoginContainer>
                 <LoginTitle>Login</LoginTitle>
                 <InputBox onSubmit={e => submitHandler(e)}>
-                    <Title>User</Title>
+                    <Title>Username</Title>
+                    <ErrorTextTitle blankUser={blankUser}>Please fill username.</ErrorTextTitle>
                     <LoginInput
                         value={user}
                         type="text"
                         placeholder="Username"
+                        onKeyDown={() => closeInvalid()}
                         onChange={e => setUser(e.target.value)}
                     />
                     <Title>Password</Title>
+                    <ErrorTextPass blankPass={blankPass}>Please fill password.</ErrorTextPass>
                     <LoginInput
-                        type="password"
+                        type="Password"
                         value={pass}
-                        type="text"
                         placeholder="Password"
-                        onKeyDown={e => keyDownHandler(e)}
+                        onKeyDown={e => keyDownHandler(e),() => closeInvalid()}
                         onChange={e => setPass(e.target.value)}
                     />
+                    <ErrorAuthenicate invalid={invalid}>{errerMessage}</ErrorAuthenicate>
                     <SubmitBtn type="submit" value="Submit" />
                 </InputBox>
             </LoginContainer>
@@ -135,5 +164,27 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 &:focus {
     border: none;
+    outline:none;
 }
+`;
+
+const ErrorTextTitle = styled.span`
+display: ${({ blankUser }) => blankUser ? "flex" : "none"};
+margin: 0.3em 0;
+font-size: .6rem;
+color: #ff2424;
+`;
+
+const ErrorTextPass = styled.span`
+display: ${({ blankPass }) => blankPass ? "flex" : "none"};
+margin: 0.3em 0;
+font-size: .6rem;
+color:#ff2424;
+`;
+
+const ErrorAuthenicate = styled.span`
+margin: 1em;
+display: ${({ invalid }) => invalid ? "flex" : "none"};
+font-size: .6rem;
+color:#ff2424;
 `;

@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
 const Header = () => {
+    const history = useHistory();
     return(
         <Fragment>
             <Wrapper>
-                <HeaderTitle>Todos</HeaderTitle>
+                <HeaderTitle onClick={() => history.push("./")}>Todo's Memo</HeaderTitle>
             </Wrapper>
         </Fragment>
     )
@@ -21,8 +22,10 @@ align-items:center;
 font-size: 1.5rem;
 font-weight: bold;
 color: #FFFFFF;
+cursor: pointer;
 position: relative;
 height: 50px;
+font-style: italic;
 /* z-index: 2; */
 padding: 0.3em 0 0.3em 0;
 width: 100%;

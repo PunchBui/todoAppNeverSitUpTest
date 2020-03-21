@@ -1,11 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from 'axios'
+import {createTodo as apiCreateTodo,updateTodo as apiUpdateTodo} from '../Api'
 
 const ModalInteractTodo = props => {
     // console.log(props)
     const [title, setTitle] = useState("")
     const [des, setDes] = useState("")
+    const [blankTitle, setBlankTitle] = useState(false)
     useEffect(() => {
         settingModal()
         console.log(props)
@@ -18,15 +19,7 @@ const ModalInteractTodo = props => {
         setDes("")
     }
     const createTodo = () => {
-        const url = "https://candidate.neversitup.com/todo/todos"
-        axios({
-            "url": url,
-            "method": "POST",
-            "headers": {
-                "Authorization": Token
-            },
-            "data": { "title": title, "description": des }
-        })
+        apiCreateTodo(Token,title,des)
         .then(function (response) {
             // console.log(response)
             props.getAllTodo()
@@ -38,15 +31,7 @@ const ModalInteractTodo = props => {
         });
     }
     const updateTodo = () => {
-        const url = "https://candidate.neversitup.com/todo/todos/" + props.todoToInteract._id
-        axios({
-            "url": url,
-            "method": "PUT",
-            "headers": {
-                "Authorization": Token
-            },
-            "data": { "title": title, "description": des }
-        })
+        apiUpdateTodo(Token,title,des,props.todoToInteract._id)
         .then(function (response) {
             // console.log(response)
             props.getAllTodo()
@@ -58,6 +43,7 @@ const ModalInteractTodo = props => {
         });
     }
     const settingModal = () => {
+        setBlankTitle(false)
         if(props.modalType == "update"){
             // console.log(props)
             setTitle(props.todoToInteract.title)
@@ -66,10 +52,14 @@ const ModalInteractTodo = props => {
     }
     const submitHandler = (e) => {
         e.preventDefault()
-        if(props.modalType == "create"){
-            createTodo()
-        }else if(props.modalType == "update"){
-            updateTodo()
+        if(title===""){
+            setBlankTitle(true)
+        }else{
+            if(props.modalType == "create"){
+                createTodo()
+            }else if(props.modalType == "update"){
+                updateTodo()
+            }
         }
     }
     const cancelHandler = (e) => {
@@ -77,14 +67,21 @@ const ModalInteractTodo = props => {
         clearInput()
         props.callbackIsModalOpen(false)
     }
+    const clearBlank = () => {
+        if(blankTitle){
+            setBlankTitle(false)
+        }
+    }
     return (
         <CreateContainner onSubmit={e => submitHandler(e)}>
             <HeadText>{header}</HeadText>
             <Label>Title</Label>
+            <ErrorTextTitle blankTitle={blankTitle}>Title can't be blank.</ErrorTextTitle>
             <InputModal
                 value={title || ""}
                 type="text"
                 placeholder="Title"
+                onKeyDown={() => clearBlank()}
                 onChange={e => setTitle(e.target.value)}
             />
             <Label>Description</Label>
@@ -178,6 +175,9 @@ border-radius: 5px 0 0 5px;
 &:focus {
     border: none;
 }
+@media only screen and (max-width: 768px){
+    width: 50%;
+}
 `;
 
 const Submit = styled.input`
@@ -197,4 +197,14 @@ box-shadow:  0 6px 20px 0 rgba(0, 0, 0, 0.19),0 4px 8px 0 rgba(0, 0, 0, 0.2);
 &:focus {
     border: none;
 }
+@media only screen and (max-width: 768px){
+    width: 50%;
+}
+`;
+
+const ErrorTextTitle = styled.span`
+display: ${({ blankTitle }) => blankTitle ? "flex" : "none"};
+margin: 0.3em 0;
+font-size: .6rem;
+color: #ff2424;
 `;
