@@ -27,8 +27,9 @@ const ModalBonus = props => {
         props.callbackIsModalOpen(false)
     }
     const arrayFilter = () => {
-        let array1 = arr1.split(",")
-        let array2 = arr2.split(",")
+        let array1 = arr1.replace(new RegExp(/[\[\s\]]/g),'').split(',')
+        let array2 = arr2.replace(new RegExp(/[\[\s\]]/g),'').split(',')
+        // console.log(array1,array2)
         array1 = array1.filter((item) => {
             return array2.includes(item); 
         })
