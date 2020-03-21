@@ -32,8 +32,8 @@ const ModalBonus = props => {
         array1 = array1.filter((item) => {
             return array2.includes(item); 
         })
-        console.log(array1); // [ 'a', 'c', 'e' ]
-        console.log(array2); // [ 'b', 'd', 'f' ]
+        // console.log(array1); // [ 'a', 'c', 'e' ]
+        // console.log(array2); // [ 'b', 'd', 'f' ]
         setResult(array1.toString() ? array1.toString() : "No Matched.")
     }
     return (

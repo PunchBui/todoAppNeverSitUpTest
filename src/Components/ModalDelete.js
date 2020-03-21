@@ -18,7 +18,7 @@ const ModalDelete = props => {
     }
     const deleteHandler = (e) => {
         e.preventDefault()
-        console.log("deleting")
+        // console.log("deleting")
         deleteTodo()
     }
     const cancelHandler = (e) => {
