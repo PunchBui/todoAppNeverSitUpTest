@@ -49,7 +49,7 @@ const ModalBonus = props => {
                 onChange={e => setArr1(e.target.value)}
             />
             <Label>Array 2</Label>
-            <Error2 blankArr2={blankArr2}>Array 1 can't be blank.</Error2>
+            <Error2 blankArr2={blankArr2}>Array 2 can't be blank.</Error2>
             <InputModal
                 value={arr2 || ""}
                 type="text"
