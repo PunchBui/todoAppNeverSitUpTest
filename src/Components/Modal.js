@@ -1,6 +1,5 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
-import axios from 'axios';
 import ModalInteractTodo from "./ModalInteractTodo"
 import ModalDelete from "./ModalDelete"
 import ModalBonus from "./ModalBonus"
@@ -11,7 +10,7 @@ const Modal = props => {
     return (
         <Fragment>
             <Wrapper isOpen={props.isOpen}>
-                {props.modalType == "delete" 
+                {props.modalType === "delete" 
                 ? <ModalDelete
                         token={props.token}
                         callbackIsModalOpen={props.callbackIsModalOpen}

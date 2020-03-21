@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {createTodo as apiCreateTodo,updateTodo as apiUpdateTodo} from '../Api'
 
@@ -9,10 +9,9 @@ const ModalInteractTodo = props => {
     const [blankTitle, setBlankTitle] = useState(false)
     useEffect(() => {
         settingModal()
-        console.log(props)
     }, [props.todoToInteract]);
-    const header = props.modalType == "create" ? "Create new todo" : "Update todo"
-    const submitType = props.modalType == "create" ? "Create" : "Update"
+    const header = props.modalType === "create" ? "Create new todo" : "Update todo"
+    const submitType = props.modalType === "create" ? "Create" : "Update"
     const Token = "Bearer " + props.token
     const clearInput = () => {
         setTitle("")
@@ -20,34 +19,36 @@ const ModalInteractTodo = props => {
     }
     const createTodo = () => {
         apiCreateTodo(Token,title,des)
-        .then(function (response) {
+        .then((response) => {
             // console.log(response)
             props.getAllTodo()
-            clearInput()
+            // clearInput()
             props.callbackIsModalOpen(false)
         })
-        .catch(function (error) {
+        .catch((error) => {
             // console.log(error)
         });
     }
     const updateTodo = () => {
         apiUpdateTodo(Token,title,des,props.todoToInteract._id)
-        .then(function (response) {
+        .then((response) => {
             // console.log(response)
             props.getAllTodo()
-            clearInput()
+            // clearInput()
             props.callbackIsModalOpen(false)
         })
-        .catch(function (error) {
+        .catch((error) => {
             // console.log(error)
         });
     }
     const settingModal = () => {
         setBlankTitle(false)
-        if(props.modalType == "update"){
+        if(props.modalType === "update"){
             // console.log(props)
             setTitle(props.todoToInteract.title)
             setDes(props.todoToInteract.description)
+        }else{
+            clearInput()
         }
     }
     const submitHandler = (e) => {
@@ -55,16 +56,16 @@ const ModalInteractTodo = props => {
         if(title===""){
             setBlankTitle(true)
         }else{
-            if(props.modalType == "create"){
+            if(props.modalType === "create"){
                 createTodo()
-            }else if(props.modalType == "update"){
+            }else if(props.modalType === "update"){
                 updateTodo()
             }
         }
     }
     const cancelHandler = (e) => {
         e.preventDefault()
-        clearInput()
+        // clearInput()
         props.callbackIsModalOpen(false)
     }
     const clearBlank = () => {

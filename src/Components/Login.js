@@ -43,28 +43,6 @@ const Login = props => {
             console.log(error)
         });
     }
-    // const url = "https://candidate.neversitup.com/todo/users/auth"
-    // const checkUser = () => {
-    //     axios({
-    //         "url": url,
-    //         "method": "POST",
-    //         "data": {
-    //             "username" : user,
-    //             "password" : pass
-    //         }
-    //     })
-    //     .then((response) => {
-    //         // console.log(response)
-    //         props.callbackToken(response.data.token)
-    //         // console.log(token);
-    //         props.callbackAuthorized(true)
-    //         history.push("/dashboard");
-    //     })
-    //     .catch( (error) => {
-    //         setInvalid(true)
-    //         console.log(invalid)
-    //     });
-    // }
     return (
         <Fragment>
             <LoginContainer>
@@ -106,7 +84,7 @@ justify-content: right;
 background-color: #FFFFFF;
 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 width: 50%;
-    border-radius: 5px;
+border-radius: 5px;
 @media only screen and (max-width: 768px){
     width: 90%;
     border-radius: 5px;

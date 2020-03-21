@@ -1,10 +1,10 @@
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
 const List = props => {
     // console.log("List props", props);
     // useEffect(() => {
-    console.log(props.todoList)
+    // console.log(props.todoList)
     // }, [props.todoList])
 
     const actionHandler = (type,payload) => {

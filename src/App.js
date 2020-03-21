@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import Main from "./Components/Main";
 import Login from "./Components/Login";
 import Modal from "./Components/Modal"
@@ -22,35 +22,35 @@ const App = () => {
     const Token = "Bearer " + token
     const getAllTodo = () => {
     apiGetAllTodo(Token)
-      .then((response) => {
-        console.log(response)
-        setTodoList(response.data)
-      })
-      .catch((error) => {
-        // console.log(error)
-      });
+        .then((response) => {
+          // console.log(response)
+          setTodoList(response.data)
+        })
+        .catch((error) => {
+          // console.log(error)
+        });
     }
     const callbackIsModalOpen = (type) => {
-      setIsModalOpen(type)
-      // console.log(isModalOpen,id)
+        setIsModalOpen(type)
+        // console.log(isModalOpen,id)
     }
     const callbackModalType = (type, payload) => {
-      setModalType(type)
-      setTodoToInteract(payload)
-      console.log(type)
-      // if(type == "delete"){
-      //   setTodoToInteract(payload)
-      //   // console.log(title)
-      // }else if(type == "update"){
+        setModalType(type)
+        setTodoToInteract(payload)
+        // console.log(type)
+        // if(type == "delete"){
+        //   setTodoToInteract(payload)
+        //   // console.log(title)
+        // }else if(type == "update"){
 
-      // }
-      // console.log("modalType",modalType)
+        // }
+        // console.log("modalType",modalType)
     }
     const callbackToken = (token) => {
-      setToken(token)
+        setToken(token)
     }
     const callbackAuthorized = (type) => {
-      setAuthorized(type)
+        setAuthorized(type)
     }
     return (
         <Fragment>
